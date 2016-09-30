@@ -88,10 +88,9 @@ void keyboard_routine ()
 	}
 }
 
-void system_call_handler() 
-{
 
-}
+void system_call_handler();
+
 
 void setIdt()
 {

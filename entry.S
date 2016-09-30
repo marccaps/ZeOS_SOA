@@ -5,7 +5,6 @@
 #include <asm.h>
 #include <segment.h>
 
-
 /**************************************************/
 /**** Save & Restore ******************************/
 /**                                              **/
@@ -85,14 +84,15 @@ ENTRY(system_call_handler)
 	jl err		; 			//if it is, jump to return an error
 	cmpl $MAX_SYSCALL, %eax	;		// Is syscall greater than MAX_SYSCALL (4)?
 	jg err		; 			//If it is, jump to return an error
-	call sys_call_table(,%eax, 0x04) ;	//Call the corresponding service routine
+	call *sys_call_table(,%eax, 0x04) ;	//Call the corresponding service routine
 	jmp fin				  ;
 err:
-	movl $-ENOSYS, %eax		;	// Move to eax the ENOSYS error
+	movl $-38, %eax		;	// Move to eax the ENOSYS error
 fin:
 	movl %eax, 0x18(%esp)	;		// Change the eax value in the stack
 	RESTORE_ALL		;		// Restore the context
-	iret	
+	iret			;		
+
 	
 	
 

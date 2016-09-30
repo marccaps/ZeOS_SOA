@@ -42,9 +42,39 @@ int sys_fork()
   return PID;
 }
 
+int sys_write(int fd, char *  buffer , int size) 
+{
+
+	if(check_fd(fd,ESCRIPTURA) != 0) {
+		return -1;
+	}
+	else {
+		if(buffer != NULL) 
+		{
+			if(size >= 0) 
+			{
+				//TODO:Enviar a escribir
+				int written = 0;
+				char container[size];
+				if(copy_from_user(buffer,&container,size) != -1) 
+				{
+					sys_write_console(&container,size);
+
+				}
+				else return -1;
+				return size;
+			}
+			else return -1;					
+		}
+		else return -1;
+	} 
+}
+
 void sys_exit()
 {  
 }
+
+
 
 
 
