@@ -4,6 +4,7 @@
 
 #include <asm.h>
 #include <segment.h>
+#include <errno.h> 
 
 /**************************************************/
 /**** Save & Restore ******************************/
@@ -78,7 +79,6 @@ ENTRY(keyboard_handler)
 	iret;
 
 ENTRY(system_call_handler)
-	
 	SAVE_ALL	; 			// Save the current context
 	cmpl $0, %eax	;			// Is syscall number negative?	
 	jl err		; 			//if it is, jump to return an error
@@ -87,7 +87,7 @@ ENTRY(system_call_handler)
 	call *sys_call_table(,%eax, 0x04) ;	//Call the corresponding service routine
 	jmp fin				  ;
 err:
-	movl $-38, %eax		;	// Move to eax the ENOSYS error
+	movl $-ENOSYS, %eax		;	// Move to eax the ENOSYS error
 fin:
 	movl %eax, 0x18(%esp)	;		// Change the eax value in the stack
 	RESTORE_ALL		;		// Restore the context

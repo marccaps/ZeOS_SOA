@@ -13,6 +13,8 @@
 
 #include <sched.h>
 
+#include <errno.h>
+
 #define LECTURA 0
 #define ESCRIPTURA 1
 
@@ -56,7 +58,7 @@ int sys_write(int fd, char *  buffer , int size)
 				//TODO:Enviar a escribir
 				int written = 0;
 				char container[size];
-				if(copy_from_user(buffer,&container,size) != -1) 
+				if(copy_from_user(buffer,&container,size) >= 0) 
 				{
 					sys_write_console(&container,size);
 

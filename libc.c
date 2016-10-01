@@ -8,6 +8,18 @@
 
 int errno;
 
+void perror() {
+
+	switch(errno) {
+	
+		case EINVAL:
+			write(1,"parametro invalido\n",19);
+			break;
+		case ENOSYS:
+			write(1,"funcion no implementada\n",24);
+	}
+}
+
 void itoa(int a, char *b)
 {
   int i, i1;
@@ -80,6 +92,8 @@ int write(int fd , char * buffer, int size)
 
     if(result < 0){
         return -1;
+	errno = result;
+	perror();
     }
     return result;
 }
