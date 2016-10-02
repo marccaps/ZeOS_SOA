@@ -13,7 +13,7 @@
 #include <utils.h>
 #include <zeos_mm.h> /* TO BE DELETED WHEN ADDED THE PROCESS MANAGEMENT CODE TO BECOME MULTIPROCESS */
 
-
+int zero_ticks;
 int (*usr_main)(void) = (void *) PH_USER_START;
 unsigned int *p_sys_size = (unsigned int *) KERNEL_START;
 unsigned int *p_usr_size = (unsigned int *) KERNEL_START+1;
@@ -52,6 +52,16 @@ inline void set_seg_regs(Word data_sel, Word stack_sel, DWord esp)
 		: /* no output */
 		: "r" (data_sel), "r" (stack_sel), "g" (esp) );
 
+}
+
+int getZeosTicks() 
+{
+	return zero_ticks;
+}
+
+void setZeosTicks(int ticks) 
+{
+	zero_ticks = ticks;
 }
 
 /*
@@ -94,6 +104,8 @@ int __attribute__((__section__(".text.main")))
 
   /* Move user code/data now (after the page table initialization) */
   copy_data((void *) KERNEL_START + *p_sys_size, usr_main, *p_usr_size);
+
+  zero_ticks=0;
 
   
   printk("Entering user mode..."); 

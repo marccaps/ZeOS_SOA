@@ -98,4 +98,30 @@ int write(int fd , char * buffer, int size)
     return result;
 }
 
+int gettime() 
+{
+	int result;
+    	__asm__ __volatile__(
+	
+		//Trap Interrupt
+		
+		"int $0x80;" //genero la interrupcio 0x80
+		"movl $10,%%eax"
+	
+		//Guardem el resultat en la variable e
+
+		:"=g" (result)
+	);
+
+	if(result < 0) 
+	{
+		errno = result;
+		perror();
+		return -1;	
+	}
+
+	return result;
+
+}
+
 

@@ -16,6 +16,8 @@ void perror();
 
 int strlen(char *a);
 
+int gettime();
+
 int getpid();
 
 int fork();

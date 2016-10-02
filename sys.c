@@ -18,6 +18,7 @@
 #define LECTURA 0
 #define ESCRIPTURA 1
 
+
 int check_fd(int fd, int permissions)
 {
   if (fd!=1) return -9; /*EBADF*/
@@ -74,6 +75,10 @@ int sys_write(int fd, char *  buffer , int size)
 
 void sys_exit()
 {  
+}
+
+int sys_gettime() {
+
 }
 
 
