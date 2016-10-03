@@ -68,30 +68,19 @@ int write(int fd , char * buffer, int size)
 			left) in ebx, the second parameter in ecx, etc.
 		*/
        
-		"pushl %%ebx ;"
-		"movl 8(%%ebp),%%ebx ;"
-		"movl 12(%%ebp),%%ecx ;"
-		"movl 16(%%ebp),%%edx;"
-		"movl 20(%%ebp),%%esi;"
-		"movl 24(%%ebp),%%edi;"
-		
-		//Put the identifier of the system call in the eax register (number 4 for write)
-
-		"movl $4, %%eax;" 
 	
 		//Trap Interrupt
 		
 		"int $0x80;" //genero la interrupcio 0x80
-		"popl %%ebx;" 
-		"movl %%eax, %0"
 	
 		//Guardem el resultat en la variable e
 
-		:"=g" (result)
+		:"=a" (result)
+		: "a" (4), "b" (fd), "c" (buffer), "d" (size)
         );
 
     if(result < 0){
-        return -1;
+        return errno;
 	errno = result;
 	perror();
     }
@@ -117,7 +106,7 @@ int gettime()
 	{
 		errno = result;
 		perror();
-		return -1;	
+		return errno;	
 	}
 
 	return result;

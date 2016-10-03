@@ -13,22 +13,24 @@
 
 #include <sched.h>
 
+#include <libc.h>
+
 #include <errno.h>
 
 #define LECTURA 0
 #define ESCRIPTURA 1
-
+#define MAX_SIZE 512
 
 int check_fd(int fd, int permissions)
 {
-  if (fd!=1) return -9; /*EBADF*/
-  if (permissions!=ESCRIPTURA) return -13; /*EACCES*/
+  if (fd!=1) return -EBADF; /*EBADF*/
+  if (permissions!=ESCRIPTURA) return -EACCES; /*EACCES*/
   return 0;
 }
 
 int sys_ni_syscall()
 {
-	return -38; /*ENOSYS*/
+	return -ENOSYS; /*ENOSYS*/
 }
 
 int sys_getpid()
@@ -47,29 +49,42 @@ int sys_fork()
 
 int sys_write(int fd, char *  buffer , int size) 
 {
-
-	if(check_fd(fd,ESCRIPTURA) != 0) {
-		return -1;
+	int check_fd_result = check_fd(fd,ESCRIPTURA);
+	if(check_fd_result != 0) {
+		return check_fd_result;
 	}
 	else {
 		if(buffer != NULL) 
 		{
+			int written = 0;
+			int sumatori_written = 0;
+			char container[MAX_SIZE];
+			while(size > MAX_SIZE) 
+			{				
+				if(copy_from_user(buffer+written,container,MAX_SIZE) >= 0) 
+				{
+					written = sys_write_console(container,MAX_SIZE);
+					sumatori_written += written;
+					size -= written;
+					
+				}
+				else return -EINVAL;
+			}
 			if(size >= 0) 
 			{
-				//TODO:Enviar a escribir
-				int written = 0;
-				char container[size];
-				if(copy_from_user(buffer,&container,size) >= 0) 
+				if(copy_from_user(buffer+written,container,size) >= 0) 
 				{
-					sys_write_console(&container,size);
-
+					written = sys_write_console(container,size);
+					sumatori_written += written;
+					size -= written;
+					
 				}
-				else return -1;
-				return size;
+				else return -EINVAL;
+				return sumatori_written;
 			}
-			else return -1;					
+			else return -EINVAL;
 		}
-		else return -1;
+		else return -EFAULT;
 	} 
 }
 
