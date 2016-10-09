@@ -70,7 +70,12 @@ void init_task1(void)
 
 
 void init_sched(){
-
+	INIT_LIST_HEAD(&freequeue);
+	INIT_LIST_HEAD(&readyqueue);
+	for(int i = 0; NR_TASKS; ++i) {
+		task[i].task.PID = -1;
+		list_add(task[i].task.list,&freequeue);
+	}
 }
 
 struct task_struct* current()
