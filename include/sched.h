@@ -28,13 +28,15 @@ union task_union {
 
 extern union task_union protected_tasks[NR_TASKS+2];
 extern union task_union *task; /* Vector de tasques */
-extern struct task_struct *idle_task;
 
-extern struct list_head freequeue;
-extern struct list_head readyqueue;
-extern struct task_union idle_process;
-struct task_struct * idle_task;
-extern struct task_union init_process;
+struct task_struct *idle_task;
+union task_union *idle_process;
+
+struct list_head freequeue;
+struct list_head readyqueue;
+
+struct task_struct *init_task;
+union task_union *init_process;
 
 
 #define KERNEL_ESP(t)       	(DWord) &(t)->stack[KERNEL_STACK_SIZE]

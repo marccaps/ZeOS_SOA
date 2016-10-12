@@ -5,6 +5,7 @@
 #include <sched.h>
 #include <mm.h>
 #include <io.h>
+#include <errno.h>
 
 /**
  * Container for the Task array and 2 additional pages (the first and the last one)
@@ -63,13 +64,13 @@ void init_idle (void)
 {
 	struct list_head *l = list_first(&freequeue);
 	list_del(l);
-	idle_process = *l; 
-	idle_process.task.PID = 0;
-	idle_process.task.dir_pages_baseAddr = allocate_DIR(idle_process.task);
-	idle_process.stack[KERNEL_STACK_SIZE-1] = cpu_idle;
-	idle_process.stack[KERNEL_STACK_SIZE-2] = 0;
-	idle_task = (task_struct*)idle_process;
-	idle_task.kernel_esp = *idle_process.stack[KERNEL_STACK_SIZE-2];
+	idle_task = list_entry(l,struct task_struct,list);
+	idle_task-> PID = 0;
+	if(allocate_DIR(idle_task) != 1) return -EAGAIN;
+	idle_process = (union task_union*)idle_task;
+	idle_process->stack[KERNEL_STACK_SIZE-1] = cpu_idle;
+	idle_process->stack[KERNEL_STACK_SIZE-2] = 0;
+	idle_task->kernel_esp = idle_process->stack[KERNEL_STACK_SIZE-2];
 
 }
 
@@ -77,22 +78,24 @@ void init_task1(void)
 {
 	struct list_head *l = list_first(&freequeue);
 	list_del(l);
-	init_process = *l;
-	init_process.task.PID = 1;
-	init_process.task.dir_pages_baseAddr = allocate_DIR(init_process.task);
-	set_user_pages(init_process.task);
-	TSS.esp0 = init_process.stack[0];
-	set_cr3(init_process.task.dir_pages_baseAddr);	
-	
+	init_task = list_entry(l,struct task_struct,list);
+	init_task-> PID = 1;
+	if(allocate_DIR(init_task) != 1) return -EAGAIN;
+	init_process = (union task_union*)init_task;
+	init_task->kernel_esp = init_process->stack[KERNEL_STACK_SIZE-1];
+	set_user_pages(init_task);
+	set_TTS_esp0(init_process->stack[0]);
+	set_cr3(init_task->dir_pages_baseAddr);		
+
 }
 
 
 void init_sched(){
 	INIT_LIST_HEAD(&freequeue);
 	INIT_LIST_HEAD(&readyqueue);
-	for(int i = 0; NR_TASKS; ++i) {
-		//task[i].task.PID = -1;
-		list_add(task[i].task.list,&freequeue);
+	for(int i = 0; i < NR_TASKS; ++i) {
+		task[i].task.PID = -1;
+		list_add(&task[i].task.list,&freequeue);
 	}
 }
 

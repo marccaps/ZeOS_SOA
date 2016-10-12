@@ -28,6 +28,8 @@ extern Descriptor  *gdt;
 
 extern TSS         tss; 
 
+void set_TTS_esp0 (int esp0Value);
+
 void init_mm();
 void set_cr3(page_table_entry *dir);
 
