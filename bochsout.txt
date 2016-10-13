@@ -31,7 +31,7 @@
 00000000000i[      ]   SB16 support: no
 00000000000i[      ]   USB support: no
 00000000000i[      ]   VGA extension support: vbe
-00000000000i[MEM0  ] allocated memory at 0xb49b3008. after alignment, vector=0xb49b4000
+00000000000i[MEM0  ] allocated memory at 0xb4973008. after alignment, vector=0xb4974000
 00000000000i[MEM0  ] 16,00MB
 00000000000i[MEM0  ] mem block size = 0x00100000, blocks=16
 00000000000i[MEM0  ] rom at 0xfffe0000/131072 ('/opt/bochs/share/bochs/BIOS-bochs-latest')
@@ -41,7 +41,7 @@
 00000000000i[DEV   ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[PLUGIN] init_dev of 'cmos' plugin device by virtual method
 00000000000i[CMOS  ] Using local time for initial clock
-00000000000i[CMOS  ] Setting initial clock to: Wed Oct 12 20:31:40 2016 (time0=1476297100)
+00000000000i[CMOS  ] Setting initial clock to: Thu Oct 13 20:37:56 2016 (time0=1476383876)
 00000000000i[PLUGIN] init_dev of 'dma' plugin device by virtual method
 00000000000i[DMA   ] channel 4 used by cascade
 00000000000i[PLUGIN] init_dev of 'pic' plugin device by virtual method
@@ -172,7 +172,7 @@
 00001529176i[BXVGA ] VBE known Display Interface b0c0
 00001529208i[BXVGA ] VBE known Display Interface b0c5
 00001532133i[VBIOS ] VBE Bios $Id: vbe.c,v 1.65 2014/07/08 18:02:25 vruppert Exp $
-00002802148i[XGUI  ] charmap update. Font Height is 16
+00002834344i[XGUI  ] charmap update. Font Height is 16
 00014040191i[BIOS  ] Booting from 0000:7c00
 00029731035i[FLOPPY] partial read() on floppy image returns 340/512
 00029775479i[FLOPPY] read() on floppy image returns 0
@@ -261,148 +261,24 @@
 00031291643i[PLUGIN] reset of 'iodebug' plugin device by virtual method
 00031291644i[XGUI  ] Mouse capture off
 00031291644i[      ] Ctrl-C detected in signal handler.
-00031296305i[BIOS  ] $Revision: 12412 $ $Date: 2014-07-10 09:28:59 +0200 (Do, 10. Jul 2014) $
-00031620057i[KBD   ] reset-disable command received
-00031622826i[BIOS  ] Starting rombios32
-00031623264i[BIOS  ] Shutdown flag 0
-00031623848i[BIOS  ] ram_size=0x01000000
-00031624269i[BIOS  ] ram_end=16MB
-00031664769i[BIOS  ] Found 1 cpu(s)
-00031678973i[BIOS  ] bios_table_addr: 0x000fa498 end=0x000fcc00
-00032006768i[PCI   ] i440FX PMC write to PAM register 59 (TLB Flush)
-00032334697i[P2ISA ] PCI IRQ routing: PIRQA# set to 0x0b
-00032334716i[P2ISA ] PCI IRQ routing: PIRQB# set to 0x09
-00032334735i[P2ISA ] PCI IRQ routing: PIRQC# set to 0x0b
-00032334754i[P2ISA ] PCI IRQ routing: PIRQD# set to 0x09
-00032334764i[P2ISA ] write: ELCR2 = 0x0a
-00032335534i[BIOS  ] PIIX3/PIIX4 init: elcr=00 0a
-00032343215i[BIOS  ] PCI: bus=0 devfn=0x00: vendor_id=0x8086 device_id=0x1237 class=0x0600
-00032345494i[BIOS  ] PCI: bus=0 devfn=0x08: vendor_id=0x8086 device_id=0x7000 class=0x0601
-00032347612i[BIOS  ] PCI: bus=0 devfn=0x09: vendor_id=0x8086 device_id=0x7010 class=0x0101
-00032348453i[BIOS  ] region 4: 0x0000c000
-00032350487i[BIOS  ] PCI: bus=0 devfn=0x0b: vendor_id=0x8086 device_id=0x7113 class=0x0680
-00032350719i[ACPI  ] new irq line = 11
-00032350731i[ACPI  ] new irq line = 9
-00032350798i[PCI   ] setting SMRAM control register to 0x4a
-00032514891i[CPU0  ] Enter to System Management Mode
-00032514902i[CPU0  ] RSM: Resuming from System Management Mode
-00032678923i[PCI   ] setting SMRAM control register to 0x0a
-00032693789i[BIOS  ] MP table addr=0x000fa570 MPC table addr=0x000fa4a0 size=0xc8
-00032695611i[BIOS  ] SMBIOS table addr=0x000fa580
-00032697779i[BIOS  ] ACPI tables: RSDP addr=0x000fa6a0 ACPI DATA addr=0x00ff0000 size=0xf72
-00032700968i[BIOS  ] Firmware waking vector 0xff00cc
-00032702763i[PCI   ] i440FX PMC write to PAM register 59 (TLB Flush)
-00032703486i[BIOS  ] bios_table_cur_addr: 0x000fa6c4
-00032831103i[VBIOS ] VGABios $Id: vgabios.c,v 1.76 2013/02/10 08:07:03 vruppert Exp $
-00032831174i[BXVGA ] VBE known Display Interface b0c0
-00032831206i[BXVGA ] VBE known Display Interface b0c5
-00032834131i[VBIOS ] VBE Bios $Id: vbe.c,v 1.65 2014/07/08 18:02:25 vruppert Exp $
-00045331839i[BIOS  ] Booting from 0000:7c00
-00061022683i[FLOPPY] partial read() on floppy image returns 340/512
-00061067127i[FLOPPY] read() on floppy image returns 0
-00061111571i[FLOPPY] read() on floppy image returns 0
-00061156015i[FLOPPY] read() on floppy image returns 0
-00061200459i[FLOPPY] read() on floppy image returns 0
-00061244903i[FLOPPY] read() on floppy image returns 0
-00061289347i[FLOPPY] read() on floppy image returns 0
-00061335538i[FLOPPY] read() on floppy image returns 0
-00061379982i[FLOPPY] read() on floppy image returns 0
-00061424426i[FLOPPY] read() on floppy image returns 0
-00061468870i[FLOPPY] read() on floppy image returns 0
-00061513314i[FLOPPY] read() on floppy image returns 0
-00061557758i[FLOPPY] read() on floppy image returns 0
-00061602202i[FLOPPY] read() on floppy image returns 0
-00061646646i[FLOPPY] read() on floppy image returns 0
-00061691090i[FLOPPY] read() on floppy image returns 0
-00061735534i[FLOPPY] read() on floppy image returns 0
-00061779978i[FLOPPY] read() on floppy image returns 0
-00061824422i[FLOPPY] read() on floppy image returns 0
-00061868866i[FLOPPY] read() on floppy image returns 0
-00061913310i[FLOPPY] read() on floppy image returns 0
-00061957754i[FLOPPY] read() on floppy image returns 0
-00062002198i[FLOPPY] read() on floppy image returns 0
-00062046642i[FLOPPY] read() on floppy image returns 0
-00062091086i[FLOPPY] read() on floppy image returns 0
-00062137284i[FLOPPY] read() on floppy image returns 0
-00062181728i[FLOPPY] read() on floppy image returns 0
-00062226172i[FLOPPY] read() on floppy image returns 0
-00062270616i[FLOPPY] read() on floppy image returns 0
-00062315060i[FLOPPY] read() on floppy image returns 0
-00062359504i[FLOPPY] read() on floppy image returns 0
-00062403948i[FLOPPY] read() on floppy image returns 0
-00062583291e[CPU0  ] write_virtual_checks(): write beyond limit, r/w
-00062583291e[CPU0  ] write_new_stack_dword(): segment limit violation
-00062583291e[CPU0  ] write_virtual_checks(): write beyond limit, r/w
-00062583291e[CPU0  ] write_new_stack_dword(): segment limit violation
-00062583291e[CPU0  ] write_virtual_checks(): write beyond limit, r/w
-00062583291e[CPU0  ] write_new_stack_dword(): segment limit violation
-00062583291i[CPU0  ] CPU is in protected mode (active)
-00062583291i[CPU0  ] CS.mode = 32 bit
-00062583291i[CPU0  ] SS.mode = 32 bit
-00062583291i[CPU0  ] EFER   = 0x00000000
-00062583291i[CPU0  ] | EAX=00000004  EBX=00000001  ECX=00108000  EDX=0000000b
-00062583291i[CPU0  ] | ESP=0011bfc4  EBP=0011bfc8  ESI=000e0200  EDI=00003ff4
-00062583291i[CPU0  ] | IOPL=0 id vip vif ac vm RF nt of df IF tf sf zf AF pf cf
-00062583291i[CPU0  ] | SEG sltr(index|ti|rpl)     base    limit G D
-00062583291i[CPU0  ] |  CS:0023( 0004| 0|  3) 00000000 ffffffff 1 1
-00062583291i[CPU0  ] |  DS:002b( 0005| 0|  3) 00000000 ffffffff 1 1
-00062583291i[CPU0  ] |  SS:002b( 0005| 0|  3) 00000000 ffffffff 1 1
-00062583291i[CPU0  ] |  ES:002b( 0005| 0|  3) 00000000 ffffffff 1 1
-00062583291i[CPU0  ] |  FS:0000( 0003| 0|  0) 00000000 ffffffff 1 1
-00062583291i[CPU0  ] |  GS:0000( 0003| 0|  0) 00000000 ffffffff 1 1
-00062583291i[CPU0  ] | EIP=00100152 (00100152)
-00062583291i[CPU0  ] | CR0=0x80000011 CR2=0x00000000
-00062583291i[CPU0  ] | CR3=0x00032000 CR4=0x00000000
-00062583291e[CPU0  ] exception(): 3rd (12) exception with no resolution, shutdown status is 00h, resetting
-00062583291i[SYS   ] bx_pc_system_c::Reset(HARDWARE) called
-00062583291i[CPU0  ] cpu hardware reset
-00062583291i[APIC0 ] allocate APIC id=0 (MMIO enabled) to 0x0000fee00000
-00062583291i[CPU0  ] CPUID[0x00000000]: 00000005 756e6547 6c65746e 49656e69
-00062583291i[CPU0  ] CPUID[0x00000001]: 00000633 00010800 00000008 1fcbfbff
-00062583291i[CPU0  ] CPUID[0x00000002]: 00410601 00000000 00000000 00000000
-00062583291i[CPU0  ] CPUID[0x00000003]: 00000000 00000000 00000000 00000000
-00062583291i[CPU0  ] CPUID[0x00000004]: 00000000 00000000 00000000 00000000
-00062583291i[CPU0  ] CPUID[0x00000005]: 00000040 00000040 00000003 00000020
-00062583291i[PLUGIN] reset of 'pci' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'pci2isa' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'cmos' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'dma' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'pic' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'pit' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'vga' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'floppy' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'acpi' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'ioapic' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'keyboard' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'harddrv' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'pci_ide' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'unmapped' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'biosdev' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'speaker' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'extfpuirq' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'parallel' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'serial' plugin device by virtual method
-00062583291i[PLUGIN] reset of 'iodebug' plugin device by virtual method
-00062583292i[XGUI  ] charmap update. Font Height is 16
-00062583292i[XGUI  ] Mouse capture off
-00062583292i[      ] dbg: Quit
-00062583292i[CPU0  ] CPU is in real mode (active)
-00062583292i[CPU0  ] CS.mode = 16 bit
-00062583292i[CPU0  ] SS.mode = 16 bit
-00062583292i[CPU0  ] EFER   = 0x00000000
-00062583292i[CPU0  ] | EAX=00000000  EBX=00000000  ECX=00000000  EDX=00000000
-00062583292i[CPU0  ] | ESP=00000000  EBP=00000000  ESI=00000000  EDI=00000000
-00062583292i[CPU0  ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf af pf cf
-00062583292i[CPU0  ] | SEG sltr(index|ti|rpl)     base    limit G D
-00062583292i[CPU0  ] |  CS:f000( 1e00| 0|  0) ffff0000 0000ffff 0 0
-00062583292i[CPU0  ] |  DS:0000( 0000| 0|  0) 00000000 0000ffff 0 0
-00062583292i[CPU0  ] |  SS:0000( 0000| 0|  0) 00000000 0000ffff 0 0
-00062583292i[CPU0  ] |  ES:0000( 0000| 0|  0) 00000000 0000ffff 0 0
-00062583292i[CPU0  ] |  FS:0000( 0000| 0|  0) 00000000 0000ffff 0 0
-00062583292i[CPU0  ] |  GS:0000( 0000| 0|  0) 00000000 0000ffff 0 0
-00062583292i[CPU0  ] | EIP=0000fff0 (0000fff0)
-00062583292i[CPU0  ] | CR0=0x60000010 CR2=0x00000000
-00062583292i[CPU0  ] | CR3=0x00000000 CR4=0x00000000
-00062583292i[CMOS  ] Last time is 1476297114 (Wed Oct 12 20:31:54 2016)
-00062583292i[XGUI  ] Exit
-00062583292i[SIM   ] quit_sim called with exit code 0
+00031291644i[      ] dbg: Quit
+00031291644i[CPU0  ] CPU is in real mode (active)
+00031291644i[CPU0  ] CS.mode = 16 bit
+00031291644i[CPU0  ] SS.mode = 16 bit
+00031291644i[CPU0  ] EFER   = 0x00000000
+00031291644i[CPU0  ] | EAX=00000000  EBX=00000000  ECX=00000000  EDX=00000000
+00031291644i[CPU0  ] | ESP=00000000  EBP=00000000  ESI=00000000  EDI=00000000
+00031291644i[CPU0  ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf af pf cf
+00031291644i[CPU0  ] | SEG sltr(index|ti|rpl)     base    limit G D
+00031291644i[CPU0  ] |  CS:f000( 1e00| 0|  0) ffff0000 0000ffff 0 0
+00031291644i[CPU0  ] |  DS:0000( 0000| 0|  0) 00000000 0000ffff 0 0
+00031291644i[CPU0  ] |  SS:0000( 0000| 0|  0) 00000000 0000ffff 0 0
+00031291644i[CPU0  ] |  ES:0000( 0000| 0|  0) 00000000 0000ffff 0 0
+00031291644i[CPU0  ] |  FS:0000( 0000| 0|  0) 00000000 0000ffff 0 0
+00031291644i[CPU0  ] |  GS:0000( 0000| 0|  0) 00000000 0000ffff 0 0
+00031291644i[CPU0  ] | EIP=0000fff0 (0000fff0)
+00031291644i[CPU0  ] | CR0=0x60000010 CR2=0x00000000
+00031291644i[CPU0  ] | CR3=0x00000000 CR4=0x00000000
+00031291644i[CMOS  ] Last time is 1476383883 (Thu Oct 13 20:38:03 2016)
+00031291644i[XGUI  ] Exit
+00031291644i[SIM   ] quit_sim called with exit code 0

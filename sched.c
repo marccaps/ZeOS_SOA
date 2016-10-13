@@ -84,7 +84,7 @@ void init_task1(void)
 	init_process = (union task_union*)init_task;
 	init_task->kernel_esp = init_process->stack[KERNEL_STACK_SIZE-1];
 	set_user_pages(init_task);
-	set_TTS_esp0(init_process->stack[0]);
+	set_TTS_esp0(init_process->stack[KERNEL_STACK_SIZE]);
 	set_cr3(init_task->dir_pages_baseAddr);		
 
 }
@@ -97,6 +97,46 @@ void init_sched(){
 		task[i].task.PID = -1;
 		list_add(&task[i].task.list,&freequeue);
 	}
+}
+
+void task_switch(union task_union *new) {
+
+	__asm__ __volatile__(
+		"pushl %esi;"
+		"pushl %edi;"
+		"pushl %ebx;"
+	);
+
+	inner_task_switch(new);
+
+	__asm__ __volatile__(
+		"popl %esi;"
+		"popl %edi;"
+		"popl %ebx;"
+	);
+
+
+}
+
+void inner_task_switch(union task_union * t) {
+	
+	int ebp;
+	struct task_struct *current_task;
+
+	set_TSS_esp0(t->stack[KERNEL_STACK_SIZE]);
+	set_cr3(t->task.dir_pages_baseAddr);
+	
+	__asm__ __volatile__(
+		"movl %%ebp,%0;"
+		:"=g"(ebp);
+	);
+
+	current_task = current();
+	current_task->kernel_esp = ebp;
+
+	//TODO:Restaurar el EBP y devolver un ret.
+	
+
 }
 
 struct task_struct* current()
