@@ -89,6 +89,12 @@ void init_task1(void)
 
 }
 
+void switch_to_idle() {
+
+	task_switch(idle_task);
+
+}
+
 
 void init_sched(){
 	INIT_LIST_HEAD(&freequeue);
@@ -110,33 +116,37 @@ void task_switch(union task_union *new) {
 	inner_task_switch(new);
 
 	__asm__ __volatile__(
-		"popl %esi;"
-		"popl %edi;"
 		"popl %ebx;"
+		"popl %edi;"
+		"popl %esi;"
 	);
-
 
 }
 
 void inner_task_switch(union task_union * t) {
 	
-	int ebp;
+	int ebp, new_esp, esp;
 	struct task_struct *current_task;
 
-	set_TSS_esp0(t->stack[KERNEL_STACK_SIZE]);
+	set_TTS_esp0((int)&(t->stack[KERNEL_STACK_SIZE]));
 	set_cr3(t->task.dir_pages_baseAddr);
-	
+
 	__asm__ __volatile__(
 		"movl %%ebp,%0;"
-		:"=g"(ebp);
+		:"=g"(ebp)
 	);
+
 
 	current_task = current();
 	current_task->kernel_esp = ebp;
+	new_esp = t->task.kernel_esp;
 
-	//TODO:Restaurar el EBP y devolver un ret.
-	
-
+	__asm__ __volatile__(
+		"movl %0, %%esp;"
+		"popl %%ebp;"
+		"ret;"
+		::"g"(new_esp)
+	);
 }
 
 struct task_struct* current()

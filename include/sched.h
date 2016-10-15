@@ -50,6 +50,8 @@ void init_idle(void);
 
 void init_sched(void);
 
+void switch_to_idle();
+
 struct task_struct * current();
 
 void task_switch(union task_union*t);
