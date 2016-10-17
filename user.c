@@ -12,6 +12,11 @@ int __attribute__ ((__section__(".text.main")))
      /* __asm__ __volatile__ ("mov %0, %%cr3"::"r" (0) ); */
 
   write(1,"Hello World",11);
+  pid = getpid();
+  char my_pid[256];
+  itoa(pid,my_pid);
+  write(1," PID:",5);
+  write(1,my_pid,strlen(my_pid));
 
   while(1) { }
 }

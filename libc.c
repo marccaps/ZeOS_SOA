@@ -61,13 +61,6 @@ int write(int fd , char * buffer, int size)
 	int result;
     	__asm__ __volatile__ (
 
-		/*
-			Parameter  passing:  ZeOS  implements  the  parameter  passing  from  user  mode  to  system
-			mode through the CPU registers, as occurs in Linux. The parameters of the stack must be
-			copied to the registers ebx, ecx, edx, esi, edi. The correct order is the first parameter (on the
-			left) in ebx, the second parameter in ecx, etc.
-		*/
-       
 	
 		//Trap Interrupt
 		
@@ -80,9 +73,8 @@ int write(int fd , char * buffer, int size)
         );
 
     if(result < 0){
-        return errno;
-	errno = result;
-	perror();
+	errno = -result;
+	return -1;
     }
     return result;
 }
@@ -95,21 +87,62 @@ int gettime()
 		//Trap Interrupt
 		
 		"int $0x80;" //genero la interrupcio 0x80
-		"movl $10,%%eax"
 	
-		//Guardem el resultat en la variable e
+		//Guardem el resultat en la variable result
 
-		:"=g" (result)
+		:"=a" (result)
+		:"a"(10)
 	);
 
 	if(result < 0) 
 	{
-		errno = result;
-		perror();
-		return errno;	
+		errno = -result;
+		return -1;	
 	}
 
 	return result;
+
+}
+
+int getpid() {
+
+	int result;
+
+    	__asm__ __volatile__ (
+
+       
+		//Trap Interrupt
+		
+		"int $0x80" //genero la interrupcio 0x80
+
+		:"=a"(result)	
+		:"a"(20)
+		
+	);
+
+	return result;
+
+}
+
+int fork() {
+
+	int pid;
+
+    	__asm__ __volatile__ (
+
+       
+		//Trap Interrupt
+		
+		"int $0x80" //genero la interrupcio 0x80
+
+		:"=a"(pid)	
+		:"a"(2)
+		
+	);
+
+	return pid;
+
+	
 
 }
 

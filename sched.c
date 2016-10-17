@@ -84,7 +84,7 @@ void init_task1(void)
 	init_process = (union task_union*)init_task;
 	init_task->kernel_esp = init_process->stack[KERNEL_STACK_SIZE-1];
 	set_user_pages(init_task);
-	set_TTS_esp0(init_process->stack[KERNEL_STACK_SIZE]);
+	set_TTS_esp0(&init_process->stack[KERNEL_STACK_SIZE]);
 	set_cr3(init_task->dir_pages_baseAddr);		
 
 }
@@ -128,14 +128,14 @@ void inner_task_switch(union task_union * t) {
 	int ebp, new_esp, esp;
 	struct task_struct *current_task;
 
-	set_TTS_esp0((int)&(t->stack[KERNEL_STACK_SIZE]));
+	set_TTS_esp0(t->task.kernel_esp);
 	set_cr3(t->task.dir_pages_baseAddr);
 
 	__asm__ __volatile__(
+		"pushl %%ebp;"
 		"movl %%ebp,%0;"
 		:"=g"(ebp)
 	);
-
 
 	current_task = current();
 	current_task->kernel_esp = ebp;
