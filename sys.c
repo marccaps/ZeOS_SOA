@@ -46,7 +46,7 @@ int sys_fork()
 	/*Inicializaciones*/
 
 	int PID=-1;
-	int free_frames[];
+	int free_frames;
 	struct task_struct *child_struct ,*parent_struct;
 	struct task_union *child_union,*parent_union;
 
@@ -73,19 +73,12 @@ int sys_fork()
 
 	/*d*/
 
-	for(int i = 0; i < NUM_PAG_DATA; ++i){
-
-		free_frames[i] = alloc_frames();
-		//Surge un error y por lo tanto dejamos tal y como estaba todo
-		if(free_frames == -1) {
-			while(i >= 0) {
-				free_frame(free_frames[i]);
-				--i;
-			}
-			list_add(child_struct->list,&freequeue);	
-			return -ENOMEM;
-		}
-	}	
+	free_frames = alloc_frames();
+	//Surge un error y por lo tanto dejamos tal y como estaba todo
+	if(free_frames == -1) {
+		list_add(child_struct->list,&freequeue);	
+		return -ENOMEM;
+	}
 
 	/*e*/
 	
