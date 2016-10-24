@@ -46,9 +46,11 @@ int sys_fork()
 	/*Inicializaciones*/
 
 	int PID=-1;
-	int free_frames;
+	int free_frames[];
 	struct task_struct *child_struct ,*parent_struct;
 	struct task_union *child_union,*parent_union;
+	page_table_entry *parent_PT,*child_PT;
+
 
 
 	/*a*/
@@ -72,17 +74,34 @@ int sys_fork()
 	if(allocate_DIR(child_struct) != 1) return -EAGAIN;
 
 	/*d*/
+	for(int i = 0; i < NUM_PAG_DATA; ++i) {
 
-	free_frames = alloc_frames();
-	//Surge un error y por lo tanto dejamos tal y como estaba todo
-	if(free_frames == -1) {
-		list_add(child_struct->list,&freequeue);	
-		return -ENOMEM;
+		free_frames[i] = alloc_frames();
+		//Surge un error y por lo tanto dejamos tal y como estaba todo
+		if(free_frames[i] == -1) {
+			while(i >= 0) free_frame(free_frames[--i]);
+			list_add(child_struct->list,&freequeue);	
+			return -ENOMEM;
+		}
 	}
 
 	/*e*/
+	child_PT = get_PT(child_struct);
+	for(int i = 0; i < NUM_PAG_KERNEL + NUM_PAG_CODE;++i) {
+
+		set_ss_pag(child_PT,i,get_frame(parent_PT,i));	
+
+	}
+
+	for(int i = PAG_LOG_INIT_DATA; i < PAG_LOG_INIT_DATA+NUM_PAG_DATA;++i) {
 	
-	child_struct->dir_pages_baseAddr = get_TP(child_struct);
+		set_ss_pag(child_PT,i,free_frame[i-PAG_LOG_INIT_DATA]);
+		set_ss_pag(parent_PT,i+20,free_frame[i-PAG_LOG_INIT_DATA]);
+
+	
+	}
+
+	child_struct->dir_pages_baseAddr = get_PT(child_struct);
 
 
 	/*f*/
