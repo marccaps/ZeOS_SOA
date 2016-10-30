@@ -23,6 +23,11 @@
 
 int MAX_PID = 2;
 
+int ret_from_stack() {
+
+	return 0;
+}
+
 int check_fd(int fd, int permissions)
 {
   if (fd!=1) return -EBADF; /*EBADF*/
@@ -46,9 +51,10 @@ int sys_fork()
 	/*Inicializaciones*/
 
 	int PID=-1;
-	int free_frames[];
+	int dir_ini,dir_dest,pos_act;
+	int free_frames[NUM_PAG_DATA];
 	struct task_struct *child_struct ,*parent_struct;
-	struct task_union *child_union,*parent_union;
+	union task_union *child_union,*parent_union;
 	page_table_entry *parent_PT,*child_PT;
 
 
@@ -70,57 +76,77 @@ int sys_fork()
 	child_struct = list_entry(l,struct task_struct,list);
 	copy_data(parent_struct,child_struct,KERNEL_STACK_SIZE*4);
 
+	parent_PT = get_PT(parent_struct);
+
 	/*c*/
 	if(allocate_DIR(child_struct) != 1) return -EAGAIN;
 
 	/*d*/
 	for(int i = 0; i < NUM_PAG_DATA; ++i) {
 
-		free_frames[i] = alloc_frames();
+		free_frames[i] = alloc_frame();
 		//Surge un error y por lo tanto dejamos tal y como estaba todo
 		if(free_frames[i] == -1) {
 			while(i >= 0) free_frame(free_frames[--i]);
-			list_add(child_struct->list,&freequeue);	
+			list_add(&child_struct->list,&freequeue);	
 			return -ENOMEM;
 		}
 	}
 
 	/*e*/
 	child_PT = get_PT(child_struct);
-	for(int i = 0; i < NUM_PAG_KERNEL + NUM_PAG_CODE;++i) {
+	for(int i = 0; i < INIT_DATA;++i) {
 
 		set_ss_pag(child_PT,i,get_frame(parent_PT,i));	
 
 	}
 
-	for(int i = PAG_LOG_INIT_DATA; i < PAG_LOG_INIT_DATA+NUM_PAG_DATA;++i) {
+	for(int i = INIT_DATA; i < INIT_DATA+NUM_PAG_DATA;++i) {
 	
-		set_ss_pag(child_PT,i,free_frame[i-PAG_LOG_INIT_DATA]);
-		set_ss_pag(parent_PT,i+20,free_frame[i-PAG_LOG_INIT_DATA]);
+		set_ss_pag(child_PT,i,free_frames[i-INIT_DATA]);
+		set_ss_pag(parent_PT,i+20,free_frames[i-INIT_DATA]);
 
 	
 	}
 
+	dir_ini = L_USER_START + (NUM_PAG_CODE)*PAGE_SIZE;
+	dir_dest = L_USER_START + (NUM_PAG_CODE+NUM_PAG_DATA)*PAGE_SIZE;
+	copy_data(dir_ini,dir_dest,NUM_PAG_DATA*PAGE_SIZE);
+
+	for(int i = NUM_PAG_KERNEL; i < NUM_PAG_DATA+NUM_PAG_KERNEL;++i) {
+	
+		del_ss_pag(parent_PT,i+(NUM_PAG_CODE+NUM_PAG_DATA));
+
+	}
+
 	child_struct->dir_pages_baseAddr = get_PT(child_struct);
+
+	set_cr3(get_DIR(parent_struct));
 
 
 	/*f*/
 
 	PID = MAX_PID;
 	MAX_PID = PID+1;
-	child_task->PID = PID;
-	
-	
-		
-	
+	child_struct->PID = PID;
 
+	__asm__ __volatile__
+		(
+			"movl %%ebp,%0;"
+			:"=g"(pos_act)
+		);
 
+	/*g*/
 
-
+	child_union = (union task_union *) child_struct;
+	pos_act = ((unsigned int)pos_act - (unsigned int)parent_struct)/4;
+	child_union -> stack[pos_act] = (unsigned int)ret_from_stack;
+	child_union -> stack[pos_act-1] = 0;
+	child_union -> task.kernel_esp = (unsigned int) &(child_union ->stack[pos_act-1]);
 
 	/*i*/
 
-	list_add_tail(&child_task->list,&readyqueue);
+	list_add_tail(&child_struct->list,&readyqueue);
 
 	/*j*/
   
