@@ -192,12 +192,6 @@ void setTSS()
   set_task_reg(KERNEL_TSS);
 }
 
-void set_TTS_esp0 (int esp0Value) {
-
-	tss.esp0 = esp0Value;	
-
-}
-
  
 /* Initializes the ByteMap of free physical pages.
  * The kernel pages are marked as used */

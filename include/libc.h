@@ -8,15 +8,15 @@
 
 #include <stats.h>
 
+extern int errno;
+
 int write(int fd, char *buffer, int size);
 
 void itoa(int a, char *b);
 
-void perror();
-
 int strlen(char *a);
 
-int gettime();
+void perror();
 
 int getpid();
 
@@ -24,6 +24,8 @@ int fork();
 
 void exit();
 
-extern int errno;
+int yield();
+
+int get_stats(int pid, struct stats *st);
 
 #endif  /* __LIBC_H__ */

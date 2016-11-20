@@ -6,7 +6,8 @@
 #include <segment.h>
 #include <hardware.h>
 #include <io.h>
-#include <system.h>
+
+#include <sched.h>
 
 #include <zeos_interrupt.h>
 
@@ -29,6 +30,23 @@ char char_map[] =
   '\0','\0','\0','\0','\0','\0','\0','\0',
   '\0','\0'
 };
+
+int zeos_ticks = 0;
+
+void clock_routine()
+{
+  zeos_show_clock();
+  zeos_ticks ++;
+  
+  schedule();
+}
+
+void keyboard_routine()
+{
+  unsigned char c = inb(0x60);
+  
+  if (c&0x80) printc_xy(0, 0, char_map[c&0x7f]);
+}
 
 void setInterruptHandler(int vector, void (*handler)(), int maxAccessibleFromPL)
 {
@@ -73,50 +91,24 @@ void setTrapHandler(int vector, void (*handler)(), int maxAccessibleFromPL)
   idt[vector].flags           = flags;
   idt[vector].highOffset      = highWord((DWord)handler);
 }
-void keyboard_handler();
-
-void keyboard_routine () 
-{	
-	char key = inb(0x60);
-	char lletra = key & (0x7F); //Element teclejat en scan code
-	char m = key & 0x80; //Is make or Break
-	if(m != 0x80) 
-	{
-		char t;
-		t = char_map[lletra];
-		if(t == '\0')t = 'C';
-		printc_xy(0,0,t);
-	}
-}
-
-
-void system_call_handler();
 
 void clock_handler();
-
-void clock_routine() 
-{
-	zeos_show_clock();
-	int zeos_clock = getZeosTicks();
-	setZeosTicks(++zeos_clock);
-}
-
+void keyboard_handler();
+void system_call_handler();
 
 void setIdt()
 {
   /* Program interrups/exception service routines */
   idtR.base  = (DWord)idt;
   idtR.limit = IDT_ENTRIES * sizeof(Gate) - 1;
-
   
   set_handlers();
 
   /* ADD INITIALIZATION CODE FOR INTERRUPT VECTOR */
-  setInterruptHandler(33,keyboard_handler,0);
-  setInterruptHandler(32,clock_handler,0);
+  setInterruptHandler(32, clock_handler, 0);
+  setInterruptHandler(33, keyboard_handler, 0);
   setTrapHandler(0x80, system_call_handler, 3);
 
   set_idt_reg(&idtR);
-
 }
 

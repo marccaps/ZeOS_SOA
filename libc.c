@@ -3,22 +3,10 @@
  */
 
 #include <libc.h>
+
 #include <types.h>
-#include <errno.h>
 
 int errno;
-
-void perror() {
-
-	switch(errno) {
-	
-		case EINVAL:
-			write(1,"parametro invalido\n",19);
-			break;
-		case ENOSYS:
-			write(1,"funcion no implementada\n",24);
-	}
-}
 
 void itoa(int a, char *b)
 {
@@ -55,93 +43,103 @@ int strlen(char *a)
   return i;
 }
 
-int write(int fd , char * buffer, int size) 
+void perror()
 {
+  char buffer[256];
 
-	int result;
-    	__asm__ __volatile__ (
+  itoa(errno, buffer);
 
-	
-		//Trap Interrupt
-		
-		"int $0x80;" //genero la interrupcio 0x80
-	
-		//Guardem el resultat en la variable e
-
-		:"=a" (result)
-		: "a" (4), "b" (fd), "c" (buffer), "d" (size)
-        );
-
-    if(result < 0){
-	errno = -result;
-	return -1;
-    }
-    return result;
+  write(1, buffer, strlen(buffer));
 }
 
-int gettime() 
+int write(int fd, char *buffer, int size)
 {
-	int result;
-    	__asm__ __volatile__(
-	
-		//Trap Interrupt
-		
-		"int $0x80;" //genero la interrupcio 0x80
-	
-		//Guardem el resultat en la variable result
-
-		:"=a" (result)
-		:"a"(10)
-	);
-
-	if(result < 0) 
-	{
-		errno = -result;
-		return -1;	
-	}
-
-	return result;
-
+  int result;
+  
+  __asm__ __volatile__ (
+	"int $0x80\n\t"
+	: "=a" (result)
+	: "a" (4), "b" (fd), "c" (buffer), "d" (size));
+  if (result<0)
+  {
+    errno = -result;
+    return -1;
+  }
+  errno=0;
+  return result;
+}
+ 
+int gettime()
+{
+  int result;
+  
+  __asm__ __volatile__ (
+	"int $0x80\n\t"
+	:"=a" (result)
+	:"a" (10) );
+  errno=0;
+  return result;
 }
 
-int getpid() {
-
-	int result;
-
-    	__asm__ __volatile__ (
-
-       
-		//Trap Interrupt
-		
-		"int $0x80" //genero la interrupcio 0x80
-
-		:"=a"(result)	
-		:"a"(20)
-		
-	);
-
-	return result;
-
+int getpid()
+{
+  int result;
+  
+  __asm__ __volatile__ (
+  	"int $0x80\n\t"
+	:"=a" (result)
+	:"a" (20) );
+  errno=0;
+  return result;
 }
 
-int fork() {
-
-	int pid;
-
-    	__asm__ __volatile__ (
-
-       
-		//Trap Interrupt
-		
-		"int $0x80" //genero la interrupcio 0x80
-
-		:"=a"(pid)	
-		:"a"(2)
-		
-	);
-
-	return pid;
-
+int fork()
+{
+  int result;
+  
+  __asm__ __volatile__ (
+  	"int $0x80\n\t"
+	:"=a" (result)
+	:"a" (2) );
+  if (result<0)
+  {
+    errno = -result;
+    return -1;
+  }
+  errno=0;
+  return result;
 }
 
+void exit(void)
+{
+  __asm__ __volatile__ (
+  	"int $0x80\n\t"
+	:
+	:"a" (1) );
+}
 
+int yield()
+{
+  int result;
+  __asm__ __volatile__ (
+  	"int $0x80\n\t"
+	:"=a" (result)
+	:"a" (13) );
+  return result;
+}
+
+int get_stats(int pid, struct stats *st)
+{
+  int result;
+  __asm__ __volatile__ (
+  	"int $0x80\n\t"
+	:"=a" (result)
+	:"a" (35), "b" (pid), "c" (st) );
+  if (result<0)
+  {
+    errno = -result;
+    return -1;
+  }
+  errno=0;
+  return result;
+}
