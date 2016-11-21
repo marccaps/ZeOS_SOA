@@ -76,4 +76,10 @@ void update_sched_data_rr();
 
 void init_stats(struct stats *s);
 
+struct stats* get_task_stats(struct task_struct* t);
+//returns: a pointer to the statistics field in task t
+
+struct list_head* get_task_list(struct task_struct* t);
+//returns: a pointer to the list_head field in the task t
+
 #endif  /* __SCHED_H__ */

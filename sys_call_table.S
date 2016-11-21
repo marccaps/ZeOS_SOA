@@ -5,7 +5,7 @@ ENTRY (sys_call_table)
 	.long sys_ni_syscall	//0
 	.long sys_exit		//1
 	.long sys_fork		//2
-	.long sys_ni_syscall	//3
+	.long sys_read_console	//3
 	.long sys_write		//4
 	.long sys_ni_syscall	//5
 	.long sys_ni_syscall	//6
@@ -19,7 +19,7 @@ ENTRY (sys_call_table)
 	.long sys_ni_syscall	//14
 	.long sys_ni_syscall	//15
 	.long sys_ni_syscall	//16
-	.long sys_ni_syscall	//17
+	.long sys_set_sched_policy	//17
 	.long sys_ni_syscall	//18
 	.long sys_ni_syscall	//19
 	.long sys_getpid	//20	
