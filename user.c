@@ -26,15 +26,19 @@ void workload1() {
 		int pid2 = fork();
 		if(pid2 = 0) {
 			prueba_estres(2000000);
+			print_act();
 			exit();
 		}
 		else {
 			prueba_estres(2000000);
+			print_act();
 			exit();
 		}
 	}
 	else {
+		//read(0,&buff,2);		
 		prueba_estres(2000000);
+		print_act();
 	}
 }
 
@@ -47,16 +51,16 @@ void workload2(){
 	if(pid1 == 0){
 		pid2 = fork();
 		if(pid2 == 0){
-		    r = read(0,&buffer, 1500);
+		    //r = read(0,&buffer, 1500);
 		    prueba_estres(300000);
-		    r = read(0,&buffer, 1500);
+		    //r = read(0,&buffer, 1500);
 		    print_act();
 		    exit();
 		}
 		else{
-			r = read(0,&buffer, 1500);
+			//r = read(0,&buffer, 1500);
 			prueba_estres(300000);
-			r = read(0,&buffer, 1500);
+			//r = read(0,&buffer, 1500);
 			print_act(); 
 			exit();
 		}
@@ -80,16 +84,16 @@ void workload3(){
 	if(pid1 == 0){
 		pid2 = fork();
 		if(pid2 == 0){
-			f = read(0, &buff,50);
+			//f = read(0, &buff,50);
 			prueba_estres(600000);
 			print_act();
 			exit();
 		}
 		else{
 			prueba_estres(1000000);
-			r = read(0,&buff,200);
+			//r = read(0,&buff,200);
 			prueba_estres(2000000);
-			r = read(0,&buff,100);
+			//r = read(0,&buff,100);
 			print_act();
 			exit();
 		}
@@ -180,7 +184,7 @@ int __attribute__ ((__section__(".text.main")))
 	while(1) 
 	{ 
 
-		exec_workload(1);	
+		exec_workload(2);	
 
 	}
 }
