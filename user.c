@@ -77,26 +77,17 @@ void workload2(){
 void workload3(){
 	
 	char buffer[32];
-	int pid1,pid2,f,r;
+	int pid1,f,r;
 
 	pid1 = fork();
 
 	if(pid1 == 0){
-		pid2 = fork();
-		if(pid2 == 0){
-			//f = read(0, &buff,50);
-			prueba_estres(600000);
-			print_act();
-			exit();
-		}
-		else{
-			prueba_estres(1000000);
-			//r = read(0,&buff,200);
-			prueba_estres(2000000);
-			//r = read(0,&buff,100);
-			print_act();
-			exit();
-		}
+
+		//f = read(0, &buff,50);
+		prueba_estres(600000);
+		print_act();
+		exit();
+	
 	}
 	else{
 		prueba_estres(100000000);
@@ -184,7 +175,7 @@ int __attribute__ ((__section__(".text.main")))
 	while(1) 
 	{ 
 
-		exec_workload(2);	
+		exec_workload(3);	
 
 	}
 }
