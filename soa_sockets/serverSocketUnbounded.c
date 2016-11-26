@@ -34,7 +34,7 @@ doService(int fd) {
 		buff[ret]='\0';
 		sprintf(buff2, "Server [%d] received: %s\n", getpid(), buff);
 		write(1, buff2, strlen(buff2));
-		ret = write(fd, "caracola ", 8);
+		ret = write(fd, "TEST ", 4);
 		if (ret < 0) {
 			perror ("Error writing to socket");
 			exit(1);

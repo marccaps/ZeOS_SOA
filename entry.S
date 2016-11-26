@@ -4,7 +4,6 @@
 
 #include <asm.h>
 #include <segment.h>
-#include <errno.h>
 
 
 /**************************************************/
@@ -37,81 +36,85 @@
 /**************************************************/
 
 #define SAVE_ALL \
-      pushl %gs; \
-      pushl %fs; \
-      pushl %es; \
-      pushl %ds; \
-      pushl %eax; \
-      pushl %ebp; \
-      pushl %edi; \
-      pushl %esi; \
-      pushl %edx; \
-      pushl %ecx; \
-      pushl %ebx; \
-      movl $__KERNEL_DS, %edx;    \
-      movl %edx, %ds;           \
-      movl %edx, %es
+	pushl %gs; \
+	pushl %fs; \
+	pushl %es; \
+	pushl %ds; \
+	pushl %eax; \
+	pushl %ebp; \
+	pushl %edi; \
+	pushl %esi; \
+	pushl %edx; \
+	pushl %ecx; \
+	pushl %ebx; \
+	movl $__KERNEL_DS, %edx;    \
+	movl %edx, %ds;           \
+	movl %edx, %es
 
 #define RESTORE_ALL \
-      popl %ebx;   \
-      popl %ecx;   \
-      popl %edx;   \
-      popl %esi;   \
-      popl %edi;   \
-      popl %ebp;   \
-      popl %eax;   \
-      popl %ds;    \
-      popl %es;    \
-      popl %fs;    \
-      popl %gs;
+	popl %ebx; \
+	popl %ecx; \
+	popl %edx; \
+	popl %esi; \
+	popl %edi; \
+	popl %ebp; \
+	popl %eax; \
+	popl %ds; \
+	popl %es; \
+	popl %fs; \
+	popl %gs
 
 #define EOI \
-      movb $0x20, %al; \
-      outb %al, $0x20;
+    movb $0x20, %al; \
+    outb %al, $0x20
 
-ENTRY(clock_handler)
-      SAVE_ALL
-      pushl %eax;
-      call user_to_system;
-      popl %eax;
-      EOI
-      call clock_routine;
-      pushl %eax;
-      call system_to_user;
-      popl %eax;
-      RESTORE_ALL
-      iret;
+#define ENOSYS 38
+
 
 ENTRY(keyboard_handler)
-      SAVE_ALL
-      pushl %eax;
-      call user_to_system;
-      popl %eax;
-      EOI
-      call keyboard_routine;
-      pushl %eax;
-      call system_to_user;
-      popl %eax;
-      RESTORE_ALL
-      iret;
+	SAVE_ALL
+  pushl %eax;
+  call user_to_system;
+  popl %eax;
+	EOI
+	call keyboard_service_routine
+	pushl %eax;
+  call system_to_user;
+  popl %eax;
+	RESTORE_ALL
+	iret
+
+ENTRY(clock_interrupt_handler)
+	SAVE_ALL
+	pushl %eax;
+  call user_to_system;
+  popl %eax;
+	EOI
+	call clock_service_routine
+	pushl %eax;
+  call system_to_user;
+  popl %eax;
+	RESTORE_ALL
+	iret
 
 ENTRY(system_call_handler)
-      SAVE_ALL
-      pushl %eax;
-      call user_to_system;
-      popl %eax;
-      cmpl $0, %eax;
-      jl err;
-      cmpl $MAX_SYSCALL, %eax;
-      jg err;
-      call *sys_call_table(, %eax, 0x4);
-      jmp fin;
+	SAVE_ALL
+	pushl %eax;
+  call user_to_system;
+  popl %eax;
+	cmpl $0, %eax
+	jl err
+	cmpl $MAX_SYSCALL, %eax
+	jg err
+	call *sys_call_table(, %eax, 0x04)
+	jmp fin
 err:
-      movl $-ENOSYS, %eax;
-fin:
-      movl %eax, 0x18(%esp);
-      pushl %eax;
-      call system_to_user;
-      popl %eax;
-      RESTORE_ALL
-      iret;
+	movl $-ENOSYS, %eax
+fin: 
+	movl %eax, 0x18(%esp)
+	pushl %eax;
+  call system_to_user;
+  popl %eax;
+	RESTORE_ALL
+	iret
+

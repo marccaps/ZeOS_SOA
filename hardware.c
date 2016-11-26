@@ -71,7 +71,7 @@ void return_gate(Word ds, Word ss, DWord esp, Word cs, DWord eip)
     "pushl %4\n\t"       /* user eip */
     "lret"
     : /*no output*/
-    : "g" (ds), "g" (ss), "g" (esp), "g" (cs), "g" (eip), "d" (*p_rdtr));
+    : "m" (ds), "m" (ss), "m" (esp), "m" (cs), "m" (eip), "d" (*p_rdtr));
 }
 
 /*
