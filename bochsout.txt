@@ -31,7 +31,7 @@
 00000000000i[      ]   SB16 support: no
 00000000000i[      ]   USB support: no
 00000000000i[      ]   VGA extension support: vbe
-00000000000i[MEM0  ] allocated memory at 0xb48c4008. after alignment, vector=0xb48c5000
+00000000000i[MEM0  ] allocated memory at 0xb4926008. after alignment, vector=0xb4927000
 00000000000i[MEM0  ] 16,00MB
 00000000000i[MEM0  ] mem block size = 0x00100000, blocks=16
 00000000000i[MEM0  ] rom at 0xfffe0000/131072 ('/opt/bochs/share/bochs/BIOS-bochs-latest')
@@ -41,7 +41,7 @@
 00000000000i[DEV   ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[PLUGIN] init_dev of 'cmos' plugin device by virtual method
 00000000000i[CMOS  ] Using local time for initial clock
-00000000000i[CMOS  ] Setting initial clock to: Wed Nov 23 22:34:16 2016 (time0=1479936856)
+00000000000i[CMOS  ] Setting initial clock to: Sat Nov 26 17:14:59 2016 (time0=1480176899)
 00000000000i[PLUGIN] init_dev of 'dma' plugin device by virtual method
 00000000000i[DMA   ] channel 4 used by cascade
 00000000000i[PLUGIN] init_dev of 'pic' plugin device by virtual method
@@ -172,9 +172,9 @@
 00001529176i[BXVGA ] VBE known Display Interface b0c0
 00001529208i[BXVGA ] VBE known Display Interface b0c5
 00001532133i[VBIOS ] VBE Bios $Id: vbe.c,v 1.65 2014/07/08 18:02:25 vruppert Exp $
-00002890268i[XGUI  ] charmap update. Font Height is 16
+00002773456i[XGUI  ] charmap update. Font Height is 16
 00014040191i[BIOS  ] Booting from 0000:7c00
-00030132778i[FLOPPY] partial read() on floppy image returns 312/512
+00030132778i[FLOPPY] partial read() on floppy image returns 320/512
 00030177222i[FLOPPY] read() on floppy image returns 0
 00030221666i[FLOPPY] read() on floppy image returns 0
 00030266110i[FLOPPY] read() on floppy image returns 0

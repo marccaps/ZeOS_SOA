@@ -1,0 +1,25 @@
+1002blocked_ticks: 0 (PCI) current-cvs 08 Jul 2014                    00:21
+1002ready_ticks: 682 75leased under the GNU LGPL
+1002user_ticks: 3382eady_ticks: 3410
+1002system_ticks: 50
+1002blocked_ticks: 0ceforge.net
+1002ready_ticks: 682.org/vgabios
+1002user_ticks: 33821user_ticks: 0
+1002system_ticks: 50apter enabled
+1002blocked_ticks: 020
+1002ready_ticks: 68207/10/14
+1002user_ticks: 338231er_ticks: 1210 09:28:59 +0200 (Do, 10. Jul 2014) $
+1002system_ticks: 50user_ticks: 9eltorito rombios32
+1002blocked_ticks: 0
+1002ready_ticks: : 0
+1002ready_ticks: 6826nu.
+1002user_ticks: 338207user_ticks: 0
+1002system_ticks: 506r_ticks: 9
+1002blocked_ticks: 0
+1002ready_ticks: 68220...........
+1002user_ticks: 3382tering user mode...
+1002system_ticks: 50maphores..OK
+1002blocked_ticks: 00kdoor..OK
+1002ready_ticks: 682
+1002user_ticks: 3382dy_ticks: 274
+1002system_ticks: 50
