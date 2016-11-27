@@ -1,4 +1,4 @@
-all: serverSocket serverSocketUnbounded serverSocketBounded serverSocketThreads clientSocket launchClient
+all: serverSocket serverSocketUnbounded serverSocketBounded serverSocketThreads serverSocketSeq clientSocket launchClient
 
 launchClient: launchClient.c
 	gcc -o launchClient launchClient.c
@@ -21,5 +21,8 @@ clientSocket: clientSocket.c socketMng.o
 socketMng.o: socketMng.c
 	gcc -c -g socketMng.c
 
+serverSocketSeq: serverSocketSeq.c socketMng.o
+	gcc -pthread -o serverSocketSeq -g serverSocketSeq.c socketMng.o
+
 clean: 
-	rm -f serverSocket serverSocketUnbounded serverSocketBounded serverSocketThreads clientSocket socketMng.o launchClient
+	rm -f serverSocket serverSocketUnbounded serverSocketBounded serverSocketThreads serverSocketSeq clientSocket socketMng.o launchClient

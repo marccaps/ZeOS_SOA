@@ -18,6 +18,29 @@
 int
 createServerSocket (int port)
 {
+int sockDesc, error;
+  struct sockaddr_in addr;
+
+  /*socket*/
+  sockDesc = socket(AF_INET, SOCK_STREAM, 0);
+
+  if(sockDesc != -1) {
+
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(port);
+
+    /*bind*/
+    if (!bind(sockDesc, (struct sockaddr *) &addr, sizeof(addr))) { //returns 0 if OK
+
+      /*listen*/
+      if (listen(sockDesc, 5)) // 0 if OK
+        return -1;
+    
+    } else return -1;
+  }  
+
+return sockDesc;
 }
 
 
@@ -29,7 +52,21 @@ createServerSocket (int port)
 int
 acceptNewConnections (int socket_fd)
 {
+struct sockaddr addr;
+  socklen_t len;
 
+  len = sizeof(socklen_t);
+  int channel = accept(socket_fd, &addr, &len);
+
+  if (errno == EINTR) 
+    channel = accept(socket_fd, &addr, &len);
+  
+  if (channel < 0) {
+
+    perror("error in accept");
+  }
+    
+return channel;
 }
 
 // Returns the socket virtual device that the client should use to access 
