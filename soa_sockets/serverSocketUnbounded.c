@@ -8,7 +8,7 @@
 
 int numberOfChildrens = 0;
 
-doServiceFork(int fd) {
+void doServiceFork(int fd) {
 	int pid = fork();
 	if (pid > -1) ++numberOfChildrens;
 	if (pid == 0) {
@@ -22,7 +22,7 @@ void reduceNumberOfChildrens(int signal) {
 }
 
 
-doService(int fd) {
+void doService(int fd) {
 	int i = 0;
 	char buff[80];
 	char buff2[80];

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
-doServiceFork(int fd) {
+void doServiceFork(int fd) {
 	if (fork() == 0) {
 		doService(fd);
 		exit(0);
@@ -10,7 +10,7 @@ doServiceFork(int fd) {
 }
 
 
-doService(int fd) {
+void doService(int fd) {
 	int i = 0;
 	char buff[80];
 	char buff2[80];

@@ -33,7 +33,7 @@ void *doService(void* fd) {
 
 }
 
-doServiceThread(int fd) {
+void doServiceThread(int fd) {
 	pthread_t t;
 	int aux = pthread_create(&t,NULL,doService,(void *) fd);
 	if (aux) {

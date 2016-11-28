@@ -159,7 +159,7 @@ int __attribute__ ((__section__(".text.main")))
 	{ 
 		set_sched_policy(1);
 
-		exec_workload(3);	
+		exec_workload(1);	
 
 
 	}
